@@ -63,11 +63,11 @@ jobs:
       # - super-linter
       - build-latex
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        with:
-          persist-credentials: false
       - name: Download resume.pdf from build-latex
         uses: actions/download-artifact@v8
         with:
@@ -85,7 +85,8 @@ jobs:
           node-version: '20'
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_AUTHOR_NAME: ezpzbz
           GIT_AUTHOR_EMAIL: pzarabadip@gmail.com
           GIT_COMMITTER_NAME: ezpzbz

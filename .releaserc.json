@@ -1,6 +1,6 @@
 {
   "branches": ["main"],
-  "repositoryUrl": "git@github.com:ezpzbz/automated-cv.git",
+  "repositoryUrl": "https://github.com/ezpzbz/automated-cv.git",
   "plugins": [
     "@semantic-release/commit-analyzer",
     [
