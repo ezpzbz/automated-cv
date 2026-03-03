@@ -72,6 +72,13 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: resume
+          path: .
+      - name: Normalize resume.pdf location
+        run: |
+          if [ -f resume/resume.pdf ]; then
+            mv resume/resume.pdf ./resume.pdf
+            rmdir resume
+          fi
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
