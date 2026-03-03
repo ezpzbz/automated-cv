@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Run prettier checks
-        uses: creyD/prettier_action@v4.6
+        uses: creyD/prettier_action@v4.2
         with:
           prettier_version: "3.8.1"
           prettier_options: --check **/*.{yaml,yml,json,md}
@@ -27,7 +27,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Run super linter
-        uses: github/super-linter@v8
+        uses: github/super-linter@v8.5.0
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
