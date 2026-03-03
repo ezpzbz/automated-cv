@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Run prettier checks
-        uses: creyD/prettier_action@v4.2
+        uses: creyD/prettier_action@v4
         with:
           prettier_version: "3.8.1"
           prettier_options: --check **/*.{yaml,yml,json,md}
@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Run super linter
-        uses: github/super-linter/slim@v4
+        uses: github/super-linter/slim@v8
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -43,15 +43,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Compile latex documents
-        uses: xu-cheng/latex-action@v2
+        uses: xu-cheng/latex-action@v4
         with:
           working_directory: src
           root_file: resume.tex
           latexmk_use_lualatex: true
       - name: Upload resume.pdf
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: resume
           path: src/resume.pdf
@@ -67,15 +67,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       - name: Download resume.pdf from build-latex
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: resume
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: "16"
       - name: Release
@@ -104,11 +104,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download resume.pdf from build-latex
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v8
         with:
           name: resume
       - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
