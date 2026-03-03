@@ -1,0 +1,31 @@
+### TeX ###
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.bbl
+*.blg
+
+## Intermediate documents:
+*.dvi
+*-converted-to.*
+__latexindent_temp.tex
+
+## PDF
+*.pdf
+
+### Editor ###
+## Vim & Emacs temp files:
+.*sw[op]
+*~
+
+### Mac OS X ###
+## Mac OS X metadata files:
+*.DS_Store
+scratch

@@ -1,0 +1,117 @@
+name: general
+on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - "**"
+
+jobs:
+  prettier:
+    name: prettier
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run prettier checks
+        uses: creyD/prettier_action@v4.2
+        with:
+          prettier_version: "3.8.1"
+          prettier_options: --check **/*.{yaml,yml,json,md}
+          dry: true
+
+  super-linter:
+    name: super-linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run super linter
+        uses: github/super-linter/slim@v4
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: "true"
+          VALIDATE_BASH: "true"
+          VALIDATE_EDITORCONFIG: "true"
+          VALIDATE_MD: "true"
+          VALIDATE_YAML: "true"
+          FILTER_REGEX_EXCLUDE: '.*/(CHANGELOG\.md)'
+
+  build-latex:
+    name: build-latex
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Compile latex documents
+        uses: xu-cheng/latex-action@v2
+        with:
+          working_directory: src
+          root_file: resume.tex
+          latexmk_use_lualatex: true
+      - name: Upload resume.pdf
+        uses: actions/upload-artifact@v3
+        with:
+          name: resume
+          path: src/resume.pdf
+          if-no-files-found: error
+
+  release:
+    name: release
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - prettier
+      - super-linter
+      - build-latex
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Download resume.pdf from build-latex
+        uses: actions/download-artifact@v3
+        with:
+          name: resume
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: ezpzbz
+          GIT_AUTHOR_EMAIL: pzarabadip@gmail.com
+          GIT_COMMITTER_NAME: ezpzbz
+          GIT_COMMITTER_EMAIL: pzarabadip@gmail.com
+        run: |
+          npx \
+            -p @semantic-release/commit-analyzer \
+            -p @semantic-release/release-notes-generator \
+            -p conventional-changelog-conventionalcommits \
+            -p @semantic-release/changelog \
+            -p @semantic-release/git \
+            -p @semantic-release/github \
+            -p semantic-release \
+            semantic-release
+
+  deploy-gh-pages:
+    name: deploy-gh-pages
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download resume.pdf from build-latex
+        uses: actions/download-artifact@v3
+        with:
+          name: resume
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: .
+          force_orphan: true
+          commit_message: "release: update gh-pages to latest version"

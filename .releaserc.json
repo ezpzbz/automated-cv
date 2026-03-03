@@ -1,0 +1,46 @@
+{
+  "branches": ["main"],
+  "repositoryUrl": "git@github.com:kirintwn/resume.git",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "types": [
+            { "type": "build", "section": "Build", "hidden": false },
+            { "type": "ci", "section": "CI", "hidden": false },
+            { "type": "docs", "section": "Documentations", "hidden": false },
+            { "type": "feat", "section": "Features" },
+            { "type": "fix", "section": "Bug Fixes" },
+            { "type": "perf", "section": "Performance", "hidden": false },
+            { "type": "refactor", "section": "Refactor", "hidden": false },
+            { "type": "style", "section": "Style", "hidden": false },
+            { "type": "test", "section": "Test", "hidden": false }
+          ]
+        }
+      }
+    ],
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["CHANGELOG.md"],
+        "message": "release: ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "./resume.pdf",
+            "label": "resume.pdf",
+            "name": "resume.pdf"
+          }
+        ]
+      }
+    ]
+  ]
+}
