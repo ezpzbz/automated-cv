@@ -7,9 +7,9 @@
 
 My resume written in LaTeX based on [Awesome-CV](https://github.com/posquit0/Awesome-CV) with complete CI/CD pipline. Fully automated testing, building & release process is powered by GitHub Actions & [semantic-release](https://github.com/semantic-release/semantic-release). The output pdf can be found in the [releases section](https://github.com/ezpzbz/automated-cv/releases/latest).
 
-## Download: [resume.pdf](https://github.com/ezpzbz/automated-cv/releases/latest/download/resume.pdf)
+## Download: [resume.pdf](https://ezpzbz.github.io/automated-cv/resume.pdf)
 
-If GitHub Pages is enabled for this repo, a preview will also be available at `https://ezpzbz.github.io/automated-cv/resume.pdf`.
+If GitHub Pages is enabled for this repo, a preview will also be available at `https://<username>.github.io/automated-cv/resume.pdf`. For example, you can find preview [here](https://ezpzbz.github.io/automated-cv/resume.pdf)
 
 ## Hiring Use (Fork + Submit)
 
