@@ -104,6 +104,8 @@ jobs:
     needs:
       - release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download resume.pdf from build-latex
         uses: actions/download-artifact@v8
