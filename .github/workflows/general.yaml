@@ -102,6 +102,35 @@ jobs:
             -p semantic-release \
             semantic-release
 
+  publish-latest:
+    name: publish-latest
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - build-latex
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download resume.pdf from build-latex
+        uses: actions/download-artifact@v8
+        with:
+          name: resume
+          path: .
+      - name: Normalize resume.pdf location
+        run: |
+          if [ -f resume/resume.pdf ]; then
+            mv resume/resume.pdf ./resume.pdf
+            rmdir resume
+          fi
+      - name: Publish latest release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Resume
+          files: resume.pdf
+          draft: false
+          prerelease: false
+
   deploy-gh-pages:
     name: deploy-gh-pages
     if: github.ref == 'refs/heads/main'
