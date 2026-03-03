@@ -13,12 +13,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: Run prettier checks
-        uses: creyD/prettier_action@v4.2
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          prettier_version: "3.8.1"
-          prettier_options: --check **/*.{yaml,yml,json,md}
-          dry: true
+          node-version: "16"
+      - name: Install dependencies
+        run: npm ci
+      - name: Run prettier checks
+        run: npm run format:check
 
   super-linter:
     name: super-linter
@@ -27,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Run super linter
-        uses: github/super-linter@v8.5.0
+        uses: super-linter/super-linter@v8.5.0
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
